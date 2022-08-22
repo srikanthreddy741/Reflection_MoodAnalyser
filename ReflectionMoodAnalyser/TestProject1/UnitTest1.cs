@@ -1,58 +1,55 @@
-using System;
-using Reflection_MoodAnalyser;
+using ReflectionMoodAnalyser;
 
-namespace Reflection_MoodAnalyser
+namespace MoodAnalyserTest
 {
-
-    public class AnalyseMoodTestCases
+    public class Tests
     {
-        MoodAnalyserFactory moodAnalyserFactory = new MoodAnalyserFactory();
+
+        MoodAnalyseFactory moodAnalyserfactory;
         [SetUp]
         public void Setup()
         {
-            moodAnalyserFactory = new MoodAnalyserFactory();
+            moodAnalyserfactory = new MoodAnalyseFactory();
         }
-
-        //TC 4.1 - Proper class details are provided and expected to return the MoodAnalyser Object
-
-        [TestCase("MoodAnalyser.MoodAnalysis", "MoodAnalysis")]
-        public void GivenMoodAnalyzerClassName_ReturnMoodAnalysisObject(string className, string constructorName)
+        /// TC-4.1 Given MoodAnalyse Class Name Should Return MoodAnalyser Object
+        [Test]
+        public void MoodAnalyserClassName_ShouldReturn_MoodAnalyserObject()
         {
-            MoodAnalysis expected = new MoodAnalysis();
-            object obj;
-
-            MoodAnalyserFactory factory = new MoodAnalyserFactory();
-            obj = factory.CreatemoodAnalyse(className, constructorName);
+            string message = null;
+            object expected = new MoodAnalyser(message);
+            object obj = MoodAnalyseFactory.CreateMoodAnalyse("ReflectionMoodAnalyser.MoodAnalyser", "MoodAnalyser");
             expected.Equals(obj);
         }
-        //TC 4.2 - improper class details are provided and expected to throw exception Class not found
-
-        [TestCase("Mood.MoodAnalysis", "MoodAnalysis", "class not found")]
-        public void GivenImproperClassName_ShouldThrowCustomException(string className, string constructorName, string expected)
+        /// TC-4.2 Given MoodAnalyse Class Name When Improper Should Throw Exception
+        [Test]
+        public void MoodAnalyserClassName_Improper_Should_ThrowMoodAnalyserException()
         {
+            object obj = null;
+
+            string expected = "Class Not Found";
             try
             {
-                MoodAnalyserFactory factory = new MoodAnalyserFactory();
-                object actual = factory.CreatemoodAnalyse(className, constructorName);
+                obj = MoodAnalyseFactory.CreateMoodAnalyse("ReflectionMoodAnalyser.Mood", "Mood");
             }
-            catch (CustomException ex)
+            catch (MoodAnalyserCustomException exception)
             {
-                Assert.AreEqual(expected, ex.Message);
+                Assert.AreEqual(expected, exception.Message);
             }
         }
-        //TC 4.3 - improper constructor details are provided and expected to throw exception Constructor not found
-
-        [TestCase("MoodAnalyser.MoodAnalysis", "Mood", "constructor not found")]
-        public void GivenImproperConstructorName_ShouldThrowCustomException(string className, string constructorName, string expected)
+        /// TC-4.3 Given MoodAnalyse Class Name When Constructor is Improper Should Throw Exception
+        [Test]
+        public void MoodAnalyserClassName_ConstructorIsImproper_Should_ThrowMoodAnalyserException()
         {
+            object obj = null;
+
+            string expected = "Constructor is Not Found";
             try
             {
-                MoodAnalyserFactory factory = new MoodAnalyserFactory();
-                object actual = factory.CreatemoodAnalyse(className, constructorName);
+                obj = MoodAnalyseFactory.CreateMoodAnalyse("ReflectionMoodAnalyser.MoodAnalyser", "AnalyserMood");
             }
-            catch (CustomException ex)
+            catch (MoodAnalyserCustomException exception)
             {
-                Assert.AreEqual(expected, ex.Message);
+                Assert.AreEqual(expected, exception.Message);
             }
         }
 
