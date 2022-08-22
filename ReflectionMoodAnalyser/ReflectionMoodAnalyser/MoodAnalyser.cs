@@ -4,29 +4,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Reflection_MoodAnalyser
+namespace ReflectionMoodAnalyser
 {
-    public class MoodAnalysis
+    public class MoodAnalyser
     {
-        public string message;
+        string message;
 
-        public MoodAnalysis()
+        /// <summary>
+        /// empty constructor
+        /// </summary>
+        public MoodAnalyser()
         {
-            Console.WriteLine("Default Constructor");
+            this.message = null;
         }
-        public MoodAnalysis(string message)//constructor
+        /// <summary>
+        /// parameterised constructor with null or empty message 
+        /// </summary>
+        /// <param name="message"></param>
+        public MoodAnalyser(string message)
         {
             this.message = message;
         }
-        public string AnalyseMood() //method to analyse mood
+
+        /// <summary>
+        /// Method to analyse mood with custom exception
+        /// </summary>
+        /// <returns></returns>
+        public string AnalyserMood()
         {
             try
             {
-                if (this.message.Equals(""))
+                if (this.message.Equals(string.Empty))
                 {
-                    throw new CustomException(CustomException.ExceptionType.EMPTY_MOOD, "Mood should not be empty");
+                    throw new MoodAnalyserCustomException(MoodAnalyserCustomException.ExceptionType.EMPTY_MESSAGE, "Mood should not be empty");
                 }
-                else if (this.message.ToLower().Contains("sad"))
+                if (this.message.Contains("SAD"))
                 {
                     return "SAD";
                 }
@@ -37,8 +49,9 @@ namespace Reflection_MoodAnalyser
             }
             catch (NullReferenceException)
             {
-                throw new CustomException(CustomException.ExceptionType.NULL_MOOD, "Mood should not be null");
+                throw new MoodAnalyserCustomException(MoodAnalyserCustomException.ExceptionType.NULL_MESSAGE, "Mood should not be null message");
             }
+
         }
     }
 }

@@ -1,60 +1,66 @@
-using System;
-using Reflection_MoodAnalyser;
+using ReflectionMoodAnalyser;
 
-namespace Reflection_MoodAnalyser
+namespace MoodAnalyserTest
 {
-
-    public class AnalyseMoodTestCases
+    public class Tests
     {
-        MoodAnalyserFactory moodAnalyserFactory = new MoodAnalyserFactory();
+        MoodAnalyserFactory moodAnalyserfactory;
         [SetUp]
         public void Setup()
         {
-            moodAnalyserFactory = new MoodAnalyserFactory();
+            moodAnalyserfactory = new MoodAnalyserFactory();
         }
 
-        //TC 4.1 - Proper class details are provided and expected to return the MoodAnalyser Object
-
-        [TestCase("MoodAnalyser.MoodAnalysis", "MoodAnalysis")]
-        public void GivenMoodAnalyzerClassName_ReturnMoodAnalysisObject(string className, string constructorName)
+        /// <summary>
+        /// TC-5.1  Given MoodAnalyser When Proper Return MoodAnalyser Object 
+        /// • Use MoodAnalyser Factory to create a MoodAnalyser Object with Parameter constructor 
+        /// • Use Equals method in MoodAnalyser to check if the two objects are equal
+        /// </summary>
+        [Test]
+        public void MoodAnalyserClassName_ShouldReturn_MoodAnalyserObject_UsingParametrizedConstructor()
         {
-            MoodAnalysis expected = new MoodAnalysis();
-            object obj;
-
-            MoodAnalyserFactory factory = new MoodAnalyserFactory();
-            obj = factory.CreatemoodAnalyse(className, constructorName);
+            object expected = new MoodAnalyser("HAPPY");
+            object obj = MoodAnalyserFactory.CreateMoodAnalyseUsingParameterizedConstructor("Day20_reflection_MoodAnalyser.MoodAnalyser", "MoodAnalyser");
             expected.Equals(obj);
         }
-        //TC 4.2 - improper class details are provided and expected to throw exception Class not found
 
-        [TestCase("Mood.MoodAnalysis", "MoodAnalysis", "class not found")]
-        public void GivenImproperClassName_ShouldThrowCustomException(string className, string constructorName, string expected)
+        /// <summary>
+        /// TC-5.2  Given Class Name When Improper Should Throw MoodAnalysisException
+        /// To pass this test case pass wrong class name catch Exception and throw Exception
+        /// indicating No Such Class Error
+        /// </summary>
+        [Test]
+        public void MoodAnalyserClassName_Improper_UsingParametrizedConstructor_ShouldThrow_Excpetion()
         {
+            string expected = "Class not found";
             try
             {
-                MoodAnalyserFactory factory = new MoodAnalyserFactory();
-                object actual = factory.CreatemoodAnalyse(className, constructorName);
+                object obj = MoodAnalyserFactory.CreateMoodAnalyseUsingParameterizedConstructor("Day20_reflection_MoodAnalyser.Mood", "MoodAnalyser");
             }
-            catch (CustomException ex)
+            catch (MoodAnalyserCustomException exception)
             {
-                Assert.AreEqual(expected, ex.Message);
-            }
-        }
-        //TC 4.3 - improper constructor details are provided and expected to throw exception Constructor not found
-
-        [TestCase("MoodAnalyser.MoodAnalysis", "Mood", "constructor not found")]
-        public void GivenImproperConstructorName_ShouldThrowCustomException(string className, string constructorName, string expected)
-        {
-            try
-            {
-                MoodAnalyserFactory factory = new MoodAnalyserFactory();
-                object actual = factory.CreatemoodAnalyse(className, constructorName);
-            }
-            catch (CustomException ex)
-            {
-                Assert.AreEqual(expected, ex.Message);
+                Assert.AreEqual(expected, exception.Message);
             }
         }
 
+        /// <summary>
+        /// TC-5.3  Given Class When Constructor Not Proper Should Throw MoodAnalysisException 
+        /// To pass this Test Case pass wrong Constructor parameter, catch the Exception and 
+        /// throw indicating No Such Method Error
+        /// </summary>
+        [Test]
+        public void MoodAnalyserClassName_ConstructorIsImproper_UsingParametrizedConstructor_Should_ThrowExcpetion()
+        {
+            string expected = "Class not found";
+            try
+            {
+                object obj = MoodAnalyserFactory.CreateMoodAnalyseUsingParameterizedConstructor("Day20_reflection_MoodAnalyser.MoodAnalyser", "Mood");
+            }
+            catch (MoodAnalyserCustomException exception)
+            {
+                Assert.AreEqual(expected, exception.Message);
+            }
+        }
     }
+
 }
