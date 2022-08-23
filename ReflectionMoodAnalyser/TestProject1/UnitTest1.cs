@@ -4,63 +4,41 @@ namespace MoodAnalyserTest
 {
     public class Tests
     {
-
-        MoodAnalyseFactory moodAnalyserfactory;
+        MoodAnalyserFactory moodAnalyserfactory;
         [SetUp]
         public void Setup()
         {
-            moodAnalyserfactory = new MoodAnalyseFactory();
+            moodAnalyserfactory = new MoodAnalyserFactory();
         }
 
         /// <summary>
-        /// TC-4.1 Given MoodAnalyse Class Name Should Return MoodAnalyser Object
+        /// TC-6.1  Given Happy Message Using Reflection When Proper Should Return HAPPY Mood
+        /// To pass this TC use reflection to invoke analyseMood Method and show HAPPY mood
+        [Test]
+        public void GivenHppyMessge_Proper_ShouldReturnHppy()
+        {
+            string expected = "HAPPY";
+            string mood = MoodAnalyserFactory.InvokeAnalyseMood("HAPPY", "AnalyserMood");
+            Assert.AreEqual(expected, mood);
+        }
+
+        /// <summary>
+        /// TC-6.2 Given Happy Message When Improper Method Should Throw MoodAnalysisException
+        /// To pass this Test Case pass wrong Method Name,
+        /// catch the Exception and throw indicating No Such Method Error
         /// </summary>
         [Test]
-        public void MoodAnalyserClassName_ShouldReturn_MoodAnalyserObject()
+        public void GivenHppyMessge_WhenIMProperMethod_ShouldThrowException()
         {
-            string message = null;
-            object expected = new MoodAnalyser(message);
-            object obj = MoodAnalyseFactory.CreateMoodAnalyse("ReflectionMoodAnalyser.MoodAnalyser", "MoodAnalyser");
-            expected.Equals(obj);
-        }
-
-        /// <summary>
-        /// TC-4.2 Given MoodAnalyse Class Name When Improper Should Throw Exception
-        /// </summary>,
-        [Test]
-        public void MoodAnalyserClassName_Improper_Should_ThrowMoodAnalyserException()
-        {
-            object obj = null;
-
-            string expected = "Class Not Found";
+            string expected = "Method not found";
             try
             {
-                obj = MoodAnalyseFactory.CreateMoodAnalyse("ReflectionMoodAnalyser.Mood", "Mood");
+                string mood = MoodAnalyserFactory.InvokeAnalyseMood("HAPPY", "Analyser");
             }
             catch (MoodAnalyserCustomException exception)
             {
                 Assert.AreEqual(expected, exception.Message);
             }
         }
-
-        /// <summary>
-        /// TC-4.3 Given MoodAnalyse Class Name When Constructor is Improper Should Throw Exception
-        /// </summary >
-        [Test]
-        public void MoodAnalyserClassName_ConstructorIsImproper_Should_ThrowMoodAnalyserException()
-        {
-            object obj = null;
-
-            string expected = "Constructor is Not Found";
-            try
-            {
-                obj = MoodAnalyseFactory.CreateMoodAnalyse("ReflectionMoodAnalyser.MoodAnalyser", "AnalyserMood");
-            }
-            catch (MoodAnalyserCustomException exception)
-            {
-                Assert.AreEqual(expected, exception.Message);
-            }
-        }
-
     }
 }
