@@ -12,32 +12,44 @@ namespace MoodAnalyserTest
         }
 
         /// <summary>
-        /// TC-6.1  Given Happy Message Using Reflection When Proper Should Return HAPPY Mood
-        /// To pass this TC use reflection to invoke analyseMood Method and show HAPPY mood
+        /// TC-7.1  Given Hppy Should Return Happy
+        /// </summary>
         [Test]
-        public void GivenHppyMessge_Proper_ShouldReturnHppy()
+        public void Given_HAPPYMessage_WithReflector_Should_ReturnHAPPY()
         {
-            string expected = "HAPPY";
-            string mood = MoodAnalyserFactory.InvokeAnalyseMood("HAPPY", "AnalyserMood");
-            Assert.AreEqual(expected, mood);
+            string result = MoodAnalyserFactory.SetField("HAPPY", "message");
+            Assert.AreEqual("HAPPY", result);
         }
 
         /// <summary>
-        /// TC-6.2 Given Happy Message When Improper Method Should Throw MoodAnalysisException
-        /// To pass this Test Case pass wrong Method Name,
-        /// catch the Exception and throw indicating No Such Method Error
+        /// TC-7.2  Set Field When Improper Should Throw Exception 
         /// </summary>
         [Test]
-        public void GivenHppyMessge_WhenIMProperMethod_ShouldThrowException()
+        public void SetField_ImProper_ShouldThrowException()
         {
-            string expected = "Method not found";
             try
             {
-                string mood = MoodAnalyserFactory.InvokeAnalyseMood("HAPPY", "Analyser");
+                string result = MoodAnalyserFactory.SetField("HAPPY", "me");
             }
             catch (MoodAnalyserCustomException exception)
             {
-                Assert.AreEqual(expected, exception.Message);
+                Assert.AreEqual("Field is not found", exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// TC-7.3  Set Null Messge  Should Throw Exception 
+        /// </summary>
+        [Test]
+        public void Setting_NullMessge_ShouldThrowException()
+        {
+            try
+            {
+                string result = MoodAnalyserFactory.SetField(null, "message");
+            }
+            catch (MoodAnalyserCustomException exception)
+            {
+                Assert.AreEqual("Message should not be null", exception.Message);
             }
         }
     }

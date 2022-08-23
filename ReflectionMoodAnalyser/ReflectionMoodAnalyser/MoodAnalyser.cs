@@ -8,10 +8,10 @@ namespace ReflectionMoodAnalyser
 {
     public class MoodAnalyser
     {
-        string message;
+        public string message;
 
         /// <summary>
-        /// empty constructor
+        /// Default constructor
         /// </summary>
         public MoodAnalyser()
         {
@@ -20,7 +20,6 @@ namespace ReflectionMoodAnalyser
         /// <summary>
         /// parameterised constructor with null or empty message 
         /// </summary>
-        /// <param name="message"></param>
         public MoodAnalyser(string message)
         {
             this.message = message;
@@ -29,7 +28,6 @@ namespace ReflectionMoodAnalyser
         /// <summary>
         /// Method to analyse mood with custom exception
         /// </summary>
-        /// <returns></returns>
         public string AnalyserMood()
         {
             try
